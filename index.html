@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>欢迎回来</title>
+    <style>
+        #app {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            font-size: 3rem;
+            text-align: center;
+            flex-direction: column;
+        }
+        #dynamicContainer {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        .dynamic-line {
+            display: block;
+            overflow: hidden;
+            white-space: nowrap;
+            animation: typing 0.9s steps(30) forwards;
+            max-width: 0;
+            opacity: 0;
+            animation-fill-mode: forwards;
+            margin: 0.2rem 0;
+        }
+        @keyframes typing {
+            0% {
+                max-width: 0;
+                opacity: 1;
+            }
+            100% {
+                max-width: 100%;
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <div id="dynamicContainer"></div>
+    </div>
+
+    <script>
+        (function() {
+            function getRandomFourDigit() {
+                return Math.floor(Math.random() * 9000 + 1000);
+            }
+
+            const fixedRandom = getRandomFourDigit();
+
+            const texts = [
+                "员工-" + fixedRandom + "，欢迎回来",
+                "权限验证-" + fixedRandom,
+                "权限-" + fixedRandom + "，验证完成",
+                "权限颁发机构：审计部",
+                "正在前往协会总部"
+            ];
+
+            const intervalMs = 600;
+            const container = document.getElementById('dynamicContainer');
+
+            if (!container) {
+                console.warn('容器 #dynamicContainer 未找到，脚本终止。');
+                return;
+            }
+
+            let currentIndex = 0; 
+            const total = texts.length; 
+            let timer = null;
+
+            function addNextText() {
+                if (currentIndex >= total) {
+                    if (timer) {
+                        clearInterval(timer);
+                        timer = null;
+                    }
+                    setTimeout(function() {
+                        window.location.href = "root.html";
+                    }, 500);
+                    return;
+                }
+
+                const text = texts[currentIndex];
+                const span = document.createElement('span');
+                span.className = 'dynamic-line';
+                span.textContent = text;
+                container.appendChild(span);
+
+                const br = document.createElement('br');
+                container.appendChild(br);
+
+                currentIndex++;
+            }
+
+            timer = setInterval(addNextText, intervalMs);
+            addNextText();
+
+            window.addEventListener('beforeunload', function() {
+                if (timer) {
+                    clearInterval(timer);
+                    timer = null;
+                }
+            });
+        })();
+    </script>
+</body>
+</html>
