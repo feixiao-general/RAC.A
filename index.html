@@ -15,6 +15,9 @@
             a {
                 font-size: 25px;
             }
+            #notice {
+                font-size: 25px;
+            }
         </style>
     </head>
     <body>
@@ -23,8 +26,17 @@
         <h2>Rational Analysis Containment Association</h2>
         <h3>未知并非不可知，失控并非不可控</h3>            
         <h3>欢迎回来，员工</h3>
+        <div id="notice">加载中...</div>
+        <script>
+            fetch('notice.txt')
+            .then(r => r.text())
+            .then(t => out.textContent = t)
+            .catch(() => out.textContent = '错误');
+        </script>
         <a href="permission.html">查看各部门权限</a>
         <br>
         <a href="archive.html">查看异常档案</a>
+        <br>
+        <a href="event.html">查看协会事件</a>
     </body>
 </html>
